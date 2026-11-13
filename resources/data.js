@@ -220,6 +220,14 @@ const RESOURCE_DATA = [
     "note": "NTA's own free lectures for JEE Main and NEET-UG, taught by IIT professors and subject experts, with one YouTube channel each for physics, chemistry, maths and biology. NTA says they are there to clear concepts and give no hint of what will be asked."
   },
   {
+    "id": "physics-thesciencecube",
+    "group": "physics-jee-neet-lectures",
+    "title": "The Science Cube",
+    "url": "https://www.thesciencecube.com/",
+    "tags": [],
+    "note": "Physics video courses for Classes 11 and 12, with an IIT-JEE physics section. Click Free Courses in the top menu (or Start learning free on the home page) to reach the free ones, since part of the site is paid bundles."
+  },
+  {
     "id": "marksapp",
     "group": "marksapp",
     "title": "MARKS App",
@@ -356,6 +364,14 @@ const RESOURCE_DATA = [
     "url": "https://www.aapt.org/physicsteam/PT-exams.cfm",
     "tags": ["free"],
     "note": "American olympiad papers, well-suited to building up before attempting INPhO-level problems."
+  },
+  {
+    "id": "physics-phoxiv",
+    "group": "physics-olympiad-pastpapers",
+    "title": "phoXiv",
+    "url": "https://phoxiv.org/",
+    "tags": [],
+    "note": "An archive of physics olympiad problems and solutions, covering IPhO, EuPhO, APhO, USAPhO, INPhO, the Hungarian Eötvös competition and dozens more, with solutions and marking schemes. Use Olympiads in the sidebar to browse by competition and year, or press Ctrl+K to search by problem. You can browse without logging in; signing in only lets you track which problems you have solved."
   },
   {
     "id": "physics-phods",
