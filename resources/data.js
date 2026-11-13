@@ -186,6 +186,14 @@ const RESOURCE_DATA = [
     "note": "Free. The marking scheme matters more than the paper - it shows exactly how marks are apportioned per step, which is the difference between knowing an answer and scoring it."
   },
   {
+    "id": "boards-dav-unit8",
+    "group": "boards-dav",
+    "title": "DAV Public School, Unit-VIII (Bhubaneswar): question papers",
+    "url": "https://davunit8.org/Assignment",
+    "tags": ["free"],
+    "note": "A DAV school in Odisha that puts its exam papers online for Classes 3 to 12, dating back to 2018: periodic tests, half-yearlies, and the DAV and Sahodaya pre-boards, often in two or three sets per subject. DAV papers have a reputation for being harder and less predictable than the board paper, which is the point of practising with them. Pick your class and click Show; the list runs oldest first, so the newest papers are at the bottom. Question papers only, no marking schemes."
+  },
+  {
     "id": "khan-academy-india",
     "group": "boards-only",
     "title": "Khan Academy India",
