@@ -309,12 +309,14 @@ async function start() {
     const response = await fetch(`${API}/apply`);
     overview = await response.json();
   } catch {
+    document.querySelector("[data-loading]")?.remove();
     closedPanel.querySelector("[data-closed-text]").textContent =
       "We couldn't load the form just now. Please refresh the page in a minute.";
     closedPanel.hidden = false;
     return;
   }
 
+  document.querySelector("[data-loading]")?.remove();
   helpAreaOptions = overview.help_areas ?? {};
   const window_ = overview.cohort?.[kind];
   const preview = location.hash === "#preview";

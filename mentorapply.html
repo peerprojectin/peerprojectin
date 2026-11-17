@@ -25,6 +25,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="preconnect" href="https://twqeocprtqcnpvsgxicw.supabase.co" crossorigin>
     <link rel="stylesheet" href="style.css">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="controls.js" defer></script>
@@ -54,6 +55,8 @@
                 <p>Your proof of eligibility is probably the most sensitive thing we ask for. Only TPP admins look at it, and only to check that you're eligible. We delete it as soon as we've made a decision on your application, and if that takes longer than 30 days for whatever reason, it gets deleted automatically anyway. There's more on this next to the upload field.</p>
                 <p>Your email gets your questionnaire link and our decision, nothing else. The rest is on our <a href="privacy">privacy page</a>.</p>
             </div>
+            <p class="loading-line" data-loading>Loading the form</p>
+
             <div class="status-panel" data-closed hidden>
                 <h2>Mentor applications</h2>
                 <p data-closed-text></p>
