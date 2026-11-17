@@ -506,6 +506,12 @@ document.querySelector("[data-login]").addEventListener("submit", async (event) 
   const form = event.currentTarget;
   const errors = form.querySelector("[data-login-error]");
   errors.hidden = true;
+  const captcha = form.querySelector("[name=cf-turnstile-response]")?.value ?? "";
+  if (!captcha) {
+    errors.textContent = "The bot check is still running. Give it a second to finish, then try again.";
+    errors.hidden = false;
+    return;
+  }
   const button = form.querySelector("[type=submit]");
   button.disabled = true;
   try {
@@ -515,7 +521,7 @@ document.querySelector("[data-login]").addEventListener("submit", async (event) 
       body: JSON.stringify({
         email: form.elements.email.value.trim(),
         password: form.elements.password.value,
-        captcha: form.querySelector("[name=cf-turnstile-response]")?.value ?? "",
+        captcha,
       }),
     });
     const data = await response.json().catch(() => ({}));

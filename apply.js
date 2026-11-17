@@ -277,9 +277,12 @@ async function submit(event) {
   if (problems.length) return showError(problems.join(" "));
   if (!form.reportValidity()) return;
 
+  const captcha = form.querySelector("[name=cf-turnstile-response]")?.value ?? "";
+  if (!captcha) return showError("The bot check is still running. Give it a second to finish, then try again.");
+
   const data = new FormData();
   data.set("application", JSON.stringify(collect()));
-  data.set("cf-turnstile-response", form.querySelector("[name=cf-turnstile-response]")?.value ?? "");
+  data.set("cf-turnstile-response", captcha);
   const proof = form.querySelector("input[type=file]");
   if (proof?.files[0]) data.set("proof", proof.files[0]);
 

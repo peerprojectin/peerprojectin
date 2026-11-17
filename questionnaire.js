@@ -164,6 +164,12 @@ recoverForm.addEventListener("submit", async (event) => {
   errorBox.hidden = true;
   status.textContent = "";
   if (!recoverForm.reportValidity()) return;
+  const captcha = recoverForm.querySelector("[name=cf-turnstile-response]")?.value ?? "";
+  if (!captcha) {
+    errorBox.textContent = "The bot check is still running. Give it a second to finish, then try again.";
+    errorBox.hidden = false;
+    return;
+  }
 
   button.disabled = true;
   try {
@@ -172,7 +178,7 @@ recoverForm.addEventListener("submit", async (event) => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         email: recoverForm.elements.email.value.trim(),
-        "cf-turnstile-response": recoverForm.querySelector("[name=cf-turnstile-response]")?.value ?? "",
+        "cf-turnstile-response": captcha,
       }),
     });
     const body = await response.json().catch(() => ({}));
