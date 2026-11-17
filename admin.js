@@ -62,6 +62,23 @@ function fromLocalInput(value) {
 function showError(message) {
   errorBox.textContent = message;
   errorBox.hidden = !message;
+  if (message) errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function toast(message) {
+  const note = el("div", { class: "admin-toast", text: message });
+  document.body.append(note);
+  setTimeout(() => note.remove(), 2500);
+}
+
+function act(handler) {
+  return async (event) => {
+    try {
+      await handler(event);
+    } catch (error) {
+      showError(error.message);
+    }
+  };
 }
 
 function storeSession(value) {
@@ -213,16 +230,17 @@ function statusControls(kind, row) {
       class: "secondary-button",
       text: status,
       disabled: me.role !== "admin",
-      onclick: async () => {
+      onclick: act(async () => {
         const emailed = EMAILED.has(status);
         const proofNote = kind === "mentors" && ["accepted", "rejected", "withdrawn"].includes(status) ? " Their proof of eligibility will be deleted." : "";
         const message = emailed
           ? `Mark ${row.display_name} as ${status}? This emails them now.${proofNote}`
           : `Mark ${row.display_name} as ${status}?${proofNote}`;
         if (!confirm(message)) return;
-        await api(`/${kind}/${row.id}/status`, { method: "POST", body: JSON.stringify({ status }) });
-        route();
-      },
+        const result = await api(`/${kind}/${row.id}/status`, { method: "POST", body: JSON.stringify({ status }) });
+        await route();
+        toast(result.emailed ? `Marked ${status}, email sent` : `Marked ${status}`);
+      }),
     }));
   }
   return box;
@@ -234,10 +252,10 @@ function verifyControl(kind, row) {
     class: "secondary-button",
     text: row.is_verified ? "mark unverified" : "mark verified",
     disabled: me.role !== "admin",
-    onclick: async () => {
+    onclick: act(async () => {
       await api(`/${kind}/${row.id}/verified`, { method: "POST", body: JSON.stringify({ is_verified: !row.is_verified }) });
       route();
-    },
+    }),
   });
 }
 
@@ -266,15 +284,16 @@ function reviewForm(row) {
     ]),
     el("div", { class: "form-actions" }, [el("button", { type: "submit", class: "submit-button", text: "save review" })]),
   );
-  form.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", act(async (event) => {
     event.preventDefault();
     const data = new FormData(form);
     if (!data.get("decision")) return showError("Pick shortlist, follow up or reject before saving.");
     const body = { notes: data.get("notes") || null, decision: data.get("decision") };
     for (const score of SCORES) body[score] = data.get(score) ? Number(data.get(score)) : null;
     await api(`/mentors/${row.id}/review`, { method: "PUT", body: JSON.stringify(body) });
-    route();
-  });
+    await route();
+    toast("Review saved");
+  }));
   return form;
 }
 
@@ -305,12 +324,18 @@ async function detailView(kind, id) {
       class: "secondary-button",
       text: row.has_proof ? "open proof (60s link, logged)" : row.proof_deleted_at ? "proof deleted" : "no proof",
       disabled: !row.has_proof || me.role !== "admin",
-      onclick: async () => {
-        const tab = window.open("", "_blank", "noopener");
-        const { url } = await api(`/mentors/${row.id}/proof`);
-        if (tab) tab.location = url;
-        else window.open(url, "_blank", "noopener");
-      },
+      onclick: act(async () => {
+        const tab = window.open("about:blank", "_blank");
+        if (tab) tab.opener = null;
+        try {
+          const { url } = await api(`/mentors/${row.id}/proof`);
+          if (tab) tab.location.replace(url);
+          else location.assign(url);
+        } catch (error) {
+          tab?.close();
+          throw error;
+        }
+      }),
     });
     const invite = row.questionnaire_invites;
     nodes.push(
@@ -360,34 +385,42 @@ async function matchesView() {
   const load = {};
   for (const r of rows) if (["pending", "active"].includes(r.status)) load[r.mentor_id] = (load[r.mentor_id] ?? 0) + 1;
 
-  const menteeSelect = select("mentee", [["", "pick a mentee"], ...mentees.filter((m) => !live.has(m.id)).map((m) => [m.id, `${m.display_name} (${label(m.class_level)}, ${label(m.tracks)})`])]);
-  const mentorSelect = select("mentor", [["", "pick a mentor"], ...mentors.map((m) => [m.id, `${m.display_name} (${load[m.id] ?? 0}/${m.mentor_capacity}, ${label(m.mentee_levels)})`])]);
+  const menteeSelect = select("mentee", [["", "pick a mentee"], ...mentees.filter((m) => !live.has(m.id)).map((m) => [m.id, `${m.display_name} - class ${label(m.class_level)}, ${label(m.tracks)}`])]);
+  const mentorSelect = select("mentor", [["", "pick a mentor"], ...mentors.map((m) => [m.id, `${m.display_name} - ${load[m.id] ?? 0} of ${m.mentor_capacity} mentees taken, mentors class ${label(m.mentee_levels)}`])]);
 
   const create = el("form", { class: "apply-form admin-match-form" }, [
     el("div", { class: "field" }, [el("label", { text: "Mentee" }), menteeSelect]),
     el("div", { class: "field" }, [el("label", { text: "Mentor" }), mentorSelect]),
     el("div", { class: "form-actions" }, [el("button", { type: "submit", class: "submit-button", text: "pair them", disabled: me.role !== "admin" })]),
   ]);
-  create.addEventListener("submit", async (event) => {
+  create.addEventListener("submit", act(async (event) => {
     event.preventDefault();
     if (!menteeSelect.value || !mentorSelect.value) return showError("Pick both a mentee and a mentor.");
     await api("/assignments", { method: "POST", body: JSON.stringify({ mentee_id: Number(menteeSelect.value), mentor_id: Number(mentorSelect.value) }) });
     route();
-  });
+  }));
 
   const table = rows.length
     ? el("div", { class: "admin-table-wrap" }, [el("table", { class: "admin-table" }, [
-      el("thead", {}, [el("tr", {}, ["mentee", "mentor", "status", "confidence", "reason", ""].map((h) => el("th", { text: h })))]),
+      el("thead", {}, [el("tr", {}, ["mentee", "mentor", "status", "confidence", "reason", "change to"].map((h) => el("th", { text: h })))]),
       el("tbody", {}, rows.map((r) => el("tr", {}, [
         el("td", { text: r.mentees?.display_name }),
         el("td", { text: r.mentors?.display_name }),
         el("td", { text: r.status }),
         el("td", { text: r.confidence_score === null ? "-" : r.confidence_score.toFixed(2) }),
         el("td", { text: r.reason ?? "-" }),
-        el("td", {}, [select("assignment-status", ["pending", "active", "completed", "cancelled"].map((s) => [s, s]), r.status, async (event) => {
-          await api(`/assignments/${r.id}`, { method: "PATCH", body: JSON.stringify({ status: event.target.value }) });
-          route();
-        })]),
+        el("td", { class: "admin-row-actions" }, ["pending", "active", "completed", "cancelled"].filter((s) => s !== r.status).map((status) => el("button", {
+          type: "button",
+          class: "mini-button",
+          text: status,
+          disabled: me.role !== "admin",
+          onclick: act(async (event) => {
+            event.stopPropagation();
+            await api(`/assignments/${r.id}`, { method: "PATCH", body: JSON.stringify({ status }) });
+            await route();
+            toast(`Match marked ${status}`);
+          }),
+        }))),
       ]))),
     ])])
     : el("p", { class: "admin-empty", text: "No matches yet." });
@@ -402,21 +435,42 @@ function cohortView() {
     ["mentee_opens_at", "Mentee applications open"], ["mentee_closes_at", "Mentee applications close"],
     ["ends_at", "Cohort ends (applications are deleted 3 months after this)"],
   ];
+  const readout = (input, note) => {
+    const iso = fromLocalInput(input.value);
+    if (!iso) {
+      note.textContent = "not set";
+      return;
+    }
+    const past = new Date(iso) <= new Date();
+    note.textContent = `${istDate(iso)} IST${past && input.name.endsWith("opens_at") ? ", already passed, so this opens immediately" : ""}`;
+    note.classList.toggle("is-warning", past && input.name.endsWith("opens_at"));
+  };
+
   const form = el("form", { class: "apply-form" }, [
-    ...fields.map(([name, text]) => el("div", { class: "field" }, [
-      el("label", { for: name, text: `${text}, IST` }),
-      el("input", { type: "datetime-local", id: name, name, value: toLocalInput(cohort[name]) }),
-    ])),
+    ...fields.map(([name, text]) => {
+      const input = el("input", { type: "datetime-local", id: name, name, value: toLocalInput(cohort[name]) });
+      const note = el("p", { class: "field-note admin-date-readout" });
+      input.addEventListener("input", () => readout(input, note));
+      readout(input, note);
+      return el("div", { class: "field" }, [el("label", { for: name, text: `${text}, IST` }), input, note]);
+    }),
     el("div", { class: "form-actions" }, [el("button", { type: "submit", class: "submit-button", text: "save dates", disabled: me.role !== "admin" })]),
   ]);
-  form.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", act(async (event) => {
     event.preventDefault();
     const body = Object.fromEntries(fields.map(([name]) => [name, fromLocalInput(form.elements[name].value)]));
+    const now = new Date();
+    const opening = ["mentor", "mentee"].filter((kind) => {
+      const opens = body[`${kind}_opens_at`];
+      const closes = body[`${kind}_closes_at`];
+      return opens && new Date(opens) <= now && (!closes || new Date(closes) > now);
+    });
+    if (opening.length && !confirm(`Saving this opens ${opening.join(" and ")} applications to the public right now. Continue?`)) return;
     const saved = await api(`/cohorts/${cohortId}`, { method: "PATCH", body: JSON.stringify(body) });
     cohorts = cohorts.map((c) => (c.id === saved.id ? saved : c));
-    showError("");
-    route();
-  });
+    await route();
+    toast("Dates saved");
+  }));
   mount(el("div", { class: "admin-filters" }, [cohortPicker()]), form);
 }
 
@@ -458,13 +512,18 @@ document.querySelector("[data-login]").addEventListener("submit", async (event) 
     const response = await fetch(`${API}/login`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email: form.elements.email.value.trim(), password: form.elements.password.value }),
+      body: JSON.stringify({
+        email: form.elements.email.value.trim(),
+        password: form.elements.password.value,
+        captcha: form.querySelector("[name=cf-turnstile-response]")?.value ?? "",
+      }),
     });
     const data = await response.json().catch(() => ({}));
     if (response.status === 429) throw new Error(`Too many failed attempts. This account is locked until ${istDate(data.locked_until)} IST.`);
     if (response.status === 401) {
       throw new Error(data.attempts_left === 1 ? "Wrong email or password. One more wrong try locks this account for an hour." : "Wrong email or password.");
     }
+    if (data.error === "captcha_failed") throw new Error("The bot check didn't go through. Please try it again.");
     if (!response.ok) throw new Error("Sign-in isn't working right now. Try again in a few minutes.");
     storeSession(data);
     form.elements.password.value = "";
@@ -473,6 +532,7 @@ document.querySelector("[data-login]").addEventListener("submit", async (event) 
     storeSession(null);
     errors.textContent = error.message;
     errors.hidden = false;
+    window.turnstile?.reset();
   } finally {
     button.disabled = false;
   }

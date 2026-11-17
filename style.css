@@ -1329,3 +1329,56 @@ html.no-overscroll body {
   flex: none;
   transform-origin: center center;
 }
+
+.admin-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  background-color: #2a2a2a;
+  border: 1px solid #a0a0a0;
+  color: #ffffff;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  animation: reveal 200ms var(--ease) both;
+}
+
+.admin-row-actions {
+  white-space: nowrap;
+}
+
+.mini-button {
+  font: inherit;
+  font-size: 0.85rem;
+  color: #c9c9cf;
+  background-color: transparent;
+  border: 1px solid #3f3f43;
+  border-radius: 0;
+  padding: 4px 10px;
+  margin: 0 6px 6px 0;
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.mini-button:hover:not(:disabled) {
+  border-color: #a0a0a0;
+  color: #ffffff;
+}
+
+.mini-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.apply-form .field-note.admin-date-readout {
+  margin: 8px 0 0;
+}
+
+.apply-form .field-note.is-warning {
+  color: #e0b4b4;
+}
+
+.form-actions + .field-note,
+.form-actions + p {
+  margin-top: 18px;
+}
