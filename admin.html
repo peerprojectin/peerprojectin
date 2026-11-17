@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="no-overscroll">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | The Peer Project</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#1E1E1E">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="controls.js" defer></script>
+    <script src="admin.js" defer></script>
+</head>
+<body class="scrollable-page">
+    <div class="guide-container admin">
+        <main class="guide-content">
+            <h1>The Peer Project <span class="brand-color">  //  Admin</span></h1>
+
+            <form class="apply-form" data-login hidden novalidate>
+                <div class="field">
+                    <label for="login_email">Email</label>
+                    <input type="email" id="login_email" name="email" required autocomplete="username">
+                </div>
+                <div class="field">
+                    <label for="login_password">Password</label>
+                    <input type="password" id="login_password" name="password" required autocomplete="current-password">
+                </div>
+                <div class="form-error" data-login-error hidden></div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">sign in</button>
+                </div>
+            </form>
+
+            <div data-app hidden>
+                <div class="admin-bar">
+                    <nav class="admin-tabs">
+                        <a href="#mentors" class="bracket-link">[mentors]</a>
+                        <a href="#mentees" class="bracket-link">[mentees]</a>
+                        <a href="#matches" class="bracket-link">[matches]</a>
+                        <a href="#cohort" class="bracket-link">[cohort]</a>
+                    </nav>
+                    <div class="admin-who">
+                        <span data-who></span>
+                        <button type="button" class="link-button" data-signout>[sign out]</button>
+                    </div>
+                </div>
+                <div class="form-error" data-error hidden></div>
+                <div data-view></div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

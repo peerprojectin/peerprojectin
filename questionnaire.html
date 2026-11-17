@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="no-overscroll">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Questionnaire | The Peer Project</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#1E1E1E">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="questionnaire.js" defer></script>
+</head>
+<body class="scrollable-page">
+    <div class="guide-container">
+        <header class="guide-header">
+            <a href="index.html" class="bracket-link" style="color: rgb(113, 113, 113);">[back to home]</a>
+            <img src="assets/tpp_themed_banner.png" alt="The Peer Project Logo" class="guide-logo">
+        </header>
+
+        <main class="guide-content">
+            <h1>The Peer Project <span class="brand-color">  //  Mentor Questionnaire</span></h1>
+
+            <p class="field-note" data-state="loading">Loading your questionnaire...</p>
+
+            <div data-state="no-link" hidden>
+                <p class="guide-lead">This page opens from the link you got after your mentor application, either on the screen right after you submitted or in your email.</p>
+                <p>If you've lost it, you can get a new one below.</p>
+            </div>
+
+            <div data-state="invalid" hidden>
+                <p class="guide-lead">This link doesn't work. It might be mistyped, or it was replaced when someone asked for a new one.</p>
+                <p>If it's yours and you still need to fill the questionnaire, get a new link below.</p>
+            </div>
+
+            <div data-state="expired" hidden>
+                <p class="guide-lead">This link has expired. The questionnaire stays open for 7 days after you apply, and that time is up.</p>
+                <p>If you think that's a mistake on our end, email <a href="mailto:summons@peerproject.in">summons@peerproject.in</a>.</p>
+            </div>
+
+            <div data-state="submitted" hidden>
+                <p class="guide-lead">You've already submitted this questionnaire.</p>
+                <p>We'll email you once we've gone through everything, and your proof of eligibility gets deleted at that point.</p>
+            </div>
+
+            <div data-state="done" hidden>
+                <p class="guide-lead">Submitted. Thanks for taking the time.</p>
+                <p>We'll email you once we've gone through everything, and your proof of eligibility gets deleted at that point. In the meantime, have a look at the <a href="mentorguide">mentor guide</a> if you haven't.</p>
+            </div>
+
+            <div data-state="error" hidden>
+                <p class="guide-lead">We couldn't load your questionnaire just now.</p>
+                <p>Please refresh the page in a minute. If it keeps happening, email <a href="mailto:summons@peerproject.in">summons@peerproject.in</a>.</p>
+            </div>
+
+            <form class="apply-form" data-recover hidden novalidate>
+                <section class="form-section">
+                    <h2>Lost your link?</h2>
+                    <div class="section-body">
+                        <div class="field">
+                            <label for="recover_email">The email you applied with</label>
+                            <p class="field-note">If there's an open questionnaire for it, we'll send you a new link, and the old one stops working.</p>
+                            <input type="email" id="recover_email" name="email" maxlength="254" required autocomplete="email">
+                        </div>
+                    </div>
+                </section>
+                <div class="form-error" data-recover-error hidden></div>
+                <div class="form-actions">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAGET7d-JyIbBwu0N" data-theme="dark"></div>
+                    <button type="submit" class="submit-button">send me a new link</button>
+                </div>
+                <p class="field-note" data-recover-status></p>
+            </form>
+
+            <form class="apply-form" data-questions hidden novalidate>
+                <p class="guide-lead">Hi <span data-name></span>. These are 8 situations our mentors actually ran into last cohort. Tell us what you'd do in each, a few lines to a short paragraph is usually enough.</p>
+                <p>You have until <strong data-expires></strong> IST. Your answers are saved in your browser's localStorage as you type, so you can close the tab and come back to it. Once you submit though, you can't edit them.</p>
+
+                <hr>
+                <div class="questions-list" data-list></div>
+
+                <div class="form-error" data-error hidden></div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">submit answers</button>
+                </div>
+            </form>
+        </main>
+
+        <footer class="guide-footer">
+            <div class="footer-copyright">
+                &copy; 2026 peerproject.in. all rights reserved.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

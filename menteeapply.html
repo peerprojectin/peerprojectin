@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="no-overscroll">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentee Application | The Peer Project</title>
+    <meta name="description" content="Apply to be matched with a senior mentor at The Peer Project. Free, text-based, on Discord.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://peerproject.in/menteeapply">
+    <meta property="og:title" content="Mentee Application // The Peer Project">
+    <meta property="og:description" content="apply to be matched with a senior mentor at The Peer Project.">
+    <meta property="og:image" content="https://peerproject.in/assets/tpp_themed_banner.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mentee Application // The Peer Project">
+    <meta name="twitter:description" content="apply to be matched with a senior mentor at The Peer Project.">
+    <meta name="twitter:image" content="https://peerproject.in/assets/tpp_themed_banner.png">
+
+    <meta name="theme-color" content="#1E1E1E">
+
+    <link rel="canonical" href="https://peerproject.in/menteeapply">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="controls.js" defer></script>
+    <script src="apply.js" defer></script>
+</head>
+<body class="scrollable-page">
+    <div class="guide-container">
+        <header class="guide-header">
+            <a href="index.html" class="bracket-link" style="color: rgb(113, 113, 113);">[back to home]</a>
+            <img src="assets/tpp_themed_banner.png" alt="The Peer Project Logo" class="guide-logo">
+        </header>
+
+        <main class="guide-content">
+            <h1>The Peer Project <span class="brand-color">  //  Mentee Application</span></h1>
+
+            <div data-intro>
+                <p class="guide-lead">If you're preparing for boards or an entrance exam, it helps a lot to have someone who's been through it recently. That's more or less what we do here - pair you with a senior who has, over text on our Discord server, for roughly 8 to 12 weeks, that is, ~3 months. It's free.</p>
+
+                <h2 class="guide-heads">What you're getting yourself into</h2>
+                <p>It's not tutoring. Your mentor won't teach you chapters or do your homework. What they will do is help you figure out how to study, where to find good material, and how to plan your weeks around it.</p>
+                <p>It does need effort from your side, though. Check in when you said you would, and be honest about what you did and didn't get done, even if it's not much. And if something comes up, tell your mentor instead of just going quiet.</p>
+                <p>Everything stays on Discord. Only you, your mentor and TPP admins can see your channel, so there's no need to move to WhatsApp or Instagram, or to share your number or real name.</p>
+                <p>And we can't promise everyone a mentor. It depends on how many we have for your field. If we can't match you, we'll tell you by email rather than leave you waiting. If you haven't yet, read <a href="howitworks">how it works</a> and the <a href="menteeguide">mentee guide</a> first.</p>
+
+                <h2 class="guide-heads">How we handle your data</h2>
+                <p>We only ask for what we need to match you. Not your full name, and not your phone number, address or school. Your application is read by TPP admins and no one else, and your mentor only sees what's relevant to mentoring you.</p>
+                <p>Your email is for our decision, nothing else. If you're under 18, a parent or guardian needs to know you're applying and be okay with it. The rest is on our <a href="privacy">privacy page</a>.</p>
+            </div>
+            <div class="status-panel" data-closed hidden>
+                <h2>Mentee applications</h2>
+                <p data-closed-text></p>
+            </div>
+
+            <form class="apply-form" data-apply="mentee" novalidate hidden>
+                <p class="field-note" data-closes></p>
+
+                <section class="form-section">
+                    <h2>About you</h2>
+                    <div class="section-body">
+                        <div class="field">
+                            <label for="display_name">What should we call you?</label>
+                            <p class="field-note data-note">A pseudonym or any preferred name works, just not your full name. Your mentor and everyone on the server will see this.</p>
+                            <input type="text" id="display_name" name="display_name" maxlength="40" required autocomplete="nickname">
+                        </div>
+
+                        <div class="field">
+                            <label for="age">Age</label>
+                            <p class="field-note data-note">To match you with someone at the right stage.</p>
+                            <input type="number" id="age" name="age" min="10" max="25" required inputmode="numeric">
+                        </div>
+
+                        <div class="field">
+                            <label for="class_level">Current class</label>
+                            <select id="class_level" name="class_level" required>
+                                <option value="" disabled selected>Choose one</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                                <option value="11">Class 11</option>
+                                <option value="12">Class 12</option>
+                                <option value="gap_year">Gap-year / dropper</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="board">Your board</label>
+                            <select id="board" name="board" required>
+                                <option value="" disabled selected>Choose one</option>
+                                <option value="cbse">CBSE</option>
+                                <option value="icse_isc">ICSE / ISC</option>
+                                <option value="state">State board</option>
+                                <option value="ib">IB</option>
+                                <option value="cambridge">Cambridge (IGCSE / A Levels)</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div data-when="board-other" hidden>
+                                <input type="text" class="other-input" name="board_other" maxlength="100" placeholder="Which board?" required>
+                            </div>
+                        </div>
+
+                        <fieldset class="field" data-when="senior" data-subjects hidden>
+                            <legend>Your subjects</legend>
+                            <div class="choices">
+                                <label class="choice"><input type="checkbox" name="subjects" value="english">English</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="physics">Physics</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="chemistry">Chemistry</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="mathematics">Mathematics</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="biology">Biology</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="computer_science">Computer Science</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="accountancy">Accountancy</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="business_studies">Business Studies</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="economics">Economics</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="history">History</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="political_science">Political Science</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="geography">Geography</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="psychology">Psychology</label>
+                                <label class="choice"><input type="checkbox" name="subjects" value="__other">Other</label>
+                            </div>
+                            <div data-when="subjects-other" hidden>
+                                <input type="text" class="other-input" name="subjects_other" maxlength="200" placeholder="Which subjects?" required>
+                            </div>
+                        </fieldset>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>What you want help with</h2>
+                    <div class="section-body">
+                        <fieldset class="field">
+                            <legend>Which fields do you need help in?</legend>
+                            <p class="field-note">Pick all that apply. We'll narrow it down further below.</p>
+                            <div class="choices">
+                                <label class="choice"><input type="checkbox" name="tracks" value="boards">Boards</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="jee">JEE</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="neet">NEET</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="cuet">CUET</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="clat_ipmat">CLAT / IPMAT</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="iat">IAT (IISER)</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="abroad">Studying abroad</label>
+                                <label class="choice"><input type="checkbox" name="tracks" value="other">Something else</label>
+                            </div>
+                        </fieldset>
+
+                        <div class="field" hidden>
+                            <div data-help-areas></div>
+                        </div>
+
+                        <div class="field">
+                            <label for="target_year">Which year are your exams in?</label>
+                            <select id="target_year" name="target_year" required>
+                                <option value="" disabled selected>Choose one</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                                <option value="2031">2031</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="help_in">What specifically do you need help with?</label>
+                            <p class="field-note">The more specific, the better. Something like "I lose marks on long answers in history" helps us a lot more than "I'm bad at history", and this is mostly what we match you on.</p>
+                            <textarea id="help_in" name="help_in" maxlength="4000" required></textarea>
+                        </div>
+
+                        <fieldset class="field">
+                            <legend>How often can you check in with a mentor?</legend>
+                            <div class="choices">
+                                <label class="choice"><input type="radio" name="availability" value="1_2" required>1 to 2 times a month</label>
+                                <label class="choice"><input type="radio" name="availability" value="3_4">3 to 4 times a month</label>
+                                <label class="choice"><input type="radio" name="availability" value="flexible">Flexible / specify</label>
+                            </div>
+                            <div data-when="availability-other" hidden>
+                                <input type="text" class="other-input" name="availability_other" maxlength="200" placeholder="e.g. weekends only, or more often near exams">
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="field">
+                            <legend>Which languages are you comfortable in?</legend>
+                            <div class="choices">
+                                <label class="choice"><input type="checkbox" name="language_preferences" value="english">English</label>
+                                <label class="choice"><input type="checkbox" name="language_preferences" value="hindi">Hindi</label>
+                                <label class="choice"><input type="checkbox" name="language_preferences" value="hinglish">Hinglish</label>
+                                <label class="choice"><input type="checkbox" name="language_preferences" value="other">Other</label>
+                            </div>
+                            <div data-when="language-other" hidden>
+                                <input type="text" class="other-input" name="language_other" maxlength="100" placeholder="Which language?" required>
+                            </div>
+                        </fieldset>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>How do we reach you</h2>
+                    <div class="section-body">
+                        <div class="field">
+                            <label for="discord_username">Discord username</label>
+                            <p class="field-note data-note">Your username, not your display name - it's under your profile picture.</p>
+                            <input type="text" id="discord_username" name="discord_username" maxlength="40" required autocomplete="off" spellcheck="false">
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <p class="field-note data-note">Only for sending you our decision, nothing else.</p>
+                            <input type="email" id="email" name="email" maxlength="254" required autocomplete="email">
+                        </div>
+
+                        <div class="field">
+                            <label for="reddit_username">Reddit username <span class="optional">[optional]</span></label>
+                            <p class="field-note data-note">Only if you'd like us to be able to reach you there too.</p>
+                            <input type="text" id="reddit_username" name="reddit_username" maxlength="40" autocomplete="off" spellcheck="false">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Anything else</h2>
+                    <div class="section-body">
+                        <fieldset class="field">
+                            <legend>Where did you hear about us? <span class="optional">[optional]</span></legend>
+                            <div class="choices">
+                                <label class="choice"><input type="checkbox" name="heard_from" value="reddit_cbse">r/CBSE</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="reddit_icse">r/ICSE</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="reddit_jee">r/JEE</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="reddit_indiancolleges">r/IndianColleges</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="discord">Discord</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="twitter">Twitter / X</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="word_of_mouth">A friend</label>
+                                <label class="choice"><input type="checkbox" name="heard_from" value="other">Somewhere else</label>
+                            </div>
+                        </fieldset>
+
+                        <div class="field">
+                            <label class="consent"><input type="checkbox" name="is_returning" data-bool><span>I was a mentee in the previous cohort.</span></label>
+                        </div>
+
+                        <div class="field">
+                            <label for="additional_info">Anything else we should know? <span class="optional">[optional]</span></label>
+                            <p class="field-note data-note">Don't include anything that identifies you, like your full name, school or phone number.</p>
+                            <textarea id="additional_info" name="additional_info" maxlength="4000"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2>Before you submit</h2>
+                    <div class="section-body">
+                        <p>We go through every application ourselves once applications close, and then email you: accepted, waitlisted, or not this time. If you're in, we'll message you on Discord once you've been matched.</p>
+                        <p>If you perhaps change your mind - email <a href="mailto:summons@peerproject.in">summons@peerproject.in</a> and we'll delete your application.</p>
+
+
+                        <label class="consent"><input type="checkbox" name="has_data_consent" data-bool required><span>I've read how The Peer Project handles my data on the <a href="privacy" target="_blank">privacy page</a> and agree to it, and if I'm under 18, a parent or guardian knows I'm applying.</span></label>
+
+                    </div>
+                </section>
+
+                <div class="form-error" data-error hidden></div>
+
+                <div class="form-actions">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAGET7d-JyIbBwu0N" data-theme="dark"></div>
+                    <button type="submit" class="submit-button">submit</button>
+                </div>
+            </form>
+
+            <div class="status-panel" data-done hidden>
+                <h2>Application received</h2>
+                <p>We'll email <strong data-done-email></strong> once applications close. If it isn't in your inbox by then, check spam.</p>
+                <p>In the meantime, our <a href="resources/">resource library</a> is open to everyone.</p>
+            </div>
+        </main>
+
+        <footer class="guide-footer">
+            <div class="footer-copyright">
+                &copy; 2026 peerproject.in. all rights reserved.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -25,8 +25,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://peerproject.in/menteeapply</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://peerproject.in/mentorapply</loc>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://peerproject.in/privacy</loc>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://peerproject.in/resources/physics</loc>
