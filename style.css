@@ -23,11 +23,11 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   margin: 0;
-  padding: 32px 0;
-  overflow-x: hidden;
+  padding: 0;
+  overflow: hidden;
   box-sizing: border-box;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -1323,4 +1323,9 @@ html.no-overscroll body {
 
 .home-container main {
   margin-bottom: 36px;
+}
+
+.home-container {
+  flex: none;
+  transform-origin: center center;
 }
