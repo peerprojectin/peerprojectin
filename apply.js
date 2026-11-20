@@ -289,12 +289,7 @@ async function submit(event) {
   submitButton.disabled = true;
   submitButton.textContent = "submitting...";
   try {
-    const headers = {};
-    try {
-      const testKey = localStorage.getItem("tpp:test-key");
-      if (testKey) headers["x-test-key"] = testKey;
-    } catch {}
-    const response = await fetch(`${API}/apply/${kind}`, { method: "POST", body: data, headers });
+    const response = await fetch(`${API}/apply/${kind}`, { method: "POST", body: data });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(body.error ?? "network");
     if (kind === "mentor") mentorDone(body);
